@@ -40,6 +40,39 @@ bool delete_mat(struct matrix* A){
     free(A);
 }
 
+bool valid_boundaries(struct matrix* A, int row, int col){
+    return row >= 0 && row < A->rows &&\
+            col >= 0 && col < A->cols;
+}
+
+bool set_elem_mat(struct matrix* A, int row, int col,float value){
+    if(valid_boundaries(A,row,col)){
+        A->mat[row][col] = value;
+        return true;
+    }
+    return false;
+}
+
+struct matrix* multiply_mat(const struct matrix* A, const struct matrix* B){
+    if (A->cols == B->rows ) {
+
+        //creating new matrix
+        struct matrix* result = new_mat(A->rows,B->cols);
+        for (size_t r = 0; r < A->rows; ++r) {
+            for (size_t c = 0; c < B->cols; ++c) {
+                int total=0;
+                for (size_t i = 0; i < B->rows; ++i) {
+                    total = total + A->mat[r][i] * B->mat[i][c];
+                }
+                result->mat[r][c] = total;
+                total = 0;
+            }
+        }
+        return result;
+    }
+    return NULL;
+}
+
 struct matrix* inv_mat(const struct matrix* A){}
 
 bool equal_mat(const struct matrix* A, const struct matrix* B){
@@ -55,6 +88,10 @@ bool equal_mat(const struct matrix* A, const struct matrix* B){
             return true;
         }
     }
+}
+
+bool equal_shape_mat(const struct matrix* A, const struct matrix* B){
+    return A->rows == B->rows && A->cols == B->cols;
 }
 
 void print_mat(const struct matrix* A){

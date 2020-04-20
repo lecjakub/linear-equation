@@ -19,6 +19,8 @@ struct matrix* new_mat(int rows, int cols);
 
 bool delete_mat(struct matrix* A);
 
+bool set_elem_mat(struct matrix* A, int row, int col,float value);
+
 struct matrix* multiply_mat(const struct matrix* A, const struct matrix* B);
 
 struct matrix* add_mat(const struct matrix* A, const struct matrix* B);
@@ -28,6 +30,8 @@ struct matrix* subtract_mat(const struct matrix* A, const struct matrix* B);
 struct matrix* inv_mat(const struct matrix* A);
 
 bool equal_mat(const struct matrix* A, const struct matrix* B);
+
+bool equal_shape_mat(const struct matrix* A, const struct matrix* B);
 
 void print_mat(const struct matrix* A);
 
