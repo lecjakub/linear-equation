@@ -29,6 +29,10 @@ struct matrix* multiply_mat(const struct matrix* A, const struct matrix* B);
 
 struct matrix* fs_mat(const struct matrix* A, const struct matrix* B);
 
+struct matrix* triu(const struct matrix* A);
+struct matrix* tril(const struct matrix* A);
+struct matrix* diag(const struct matrix* A);
+
 bool equal_mat(const struct matrix* A, const struct matrix* B);
 
 bool equal_shape_mat(const struct matrix* A, const struct matrix* B);

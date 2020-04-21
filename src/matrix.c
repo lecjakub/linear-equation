@@ -38,6 +38,7 @@ bool delete_mat(struct matrix* A){
 
     //deallocate whole struct
     free(A);
+    return true;
 }
 
 bool valid_boundaries(struct matrix* A, int row, int col){
@@ -86,14 +87,14 @@ struct matrix* multiply_mat(const struct matrix* A, const struct matrix* B){
 
         //creating new matrix
         struct matrix* result = new_mat(A->rows,B->cols);
+
         for (size_t r = 0; r < A->rows; ++r) {
             for (size_t c = 0; c < B->cols; ++c) {
                 float total=0;
                 for (size_t i = 0; i < B->rows; ++i) {
-                    total = total + A->mat[r][i] * B->mat[i][c];
+                    total += A->mat[r][i] * B->mat[i][c];
                 }
                 result->mat[r][c] = total;
-                total = 0;
             }
         }
         return result;
@@ -109,6 +110,37 @@ struct matrix* fs_mat(const struct matrix* A, const struct matrix* b){
             leftside += A->mat[i][j] * result->mat[j][0];
         }
         result->mat[i][0] = (b->mat[i][0] - leftside)/A->mat[i][i];
+    }
+    return result;
+}
+
+struct matrix* triu(const struct matrix* A){
+    struct matrix* result = new_mat(A->rows, A->cols);
+
+    for (size_t i = 0; i < A->cols; ++i) {
+        for (size_t j = 0; j < i; ++j) {
+            result->mat[j][i] = A->mat[j][i];
+        }
+    }
+
+    return result;
+}
+
+struct matrix* tril(const struct matrix* A){
+    struct matrix* result = new_mat(A->rows, A->cols);
+
+    for (size_t i = 0; i < A->rows; ++i) {
+        for (size_t j = 0; j < i; ++j) {
+            result->mat[i][j] = A->mat[i][j];
+        }
+    }
+    return result;
+}
+struct matrix* diag(const struct matrix* A){
+    struct matrix* result = new_mat(A->rows, A->cols);
+
+    for (size_t i = 0; i < A->rows; ++i) {
+        result->mat[i][i] = A->mat[i][i];
     }
     return result;
 }
