@@ -6,6 +6,7 @@ include_directories(../libraries/include)
 link_directories(../libraries/lib)
 
 set(SRC_FILES matrix.c core.c argparser.c)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
 add_definitions("-O")
 add_executable(mnap ${SRC_FILES})
 target_link_libraries(mnap config)

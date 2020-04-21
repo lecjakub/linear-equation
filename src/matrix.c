@@ -42,7 +42,26 @@ bool delete_mat(struct matrix *A) {
     return true;
 }
 
-bool valid_boundaries(struct matrix *A, int row, int col) {
+struct matrix* copy_mat(const struct matrix* A){
+    struct matrix* result = new_mat(A->rows, A->cols,0);
+
+    for (size_t i = 0; i < A->rows; ++i) {
+        for (size_t j = 0; j < A->cols; ++j) {
+            result->mat[i][j] = A->mat[i][j];
+        }
+    }
+    return result;
+}
+
+struct matrix* eye(int n){
+    struct matrix* result = new_mat(n,n,0);
+    for (size_t i = 0; i < n; ++i) {
+        result->mat[i][i] = 1;
+    }
+    return result;
+}
+
+bool valid_boundaries(const struct matrix *A, int row, int col) {
     return row >= 0 && row < A->rows && \
             col >= 0 && col < A->cols;
 }
@@ -54,6 +73,14 @@ bool set_elem_mat(struct matrix *A, int row, int col, double value) {
     }
     return false;
 }
+
+double get_elem_mat(const struct matrix* A,int row,int col){
+    if(valid_boundaries(A,row,col)){
+        return A->mat[row][col];
+    }
+    return 0;
+}
+
 
 struct matrix *add_mat(const struct matrix *A, const struct matrix *B) {
     if (equal_shape_mat(A, B)) {

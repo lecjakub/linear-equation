@@ -17,9 +17,15 @@ struct matrix {
 
 struct matrix* new_mat(int rows, int cols,double init_value);
 
+struct matrix* copy_mat(const struct matrix* A);
+
+struct matrix* eye(int n);
+
 bool delete_mat(struct matrix* A);
 
 bool set_elem_mat(struct matrix* A, int row, int col,double value);
+
+double get_elem_mat(const struct matrix* A,int row,int col);
 
 struct matrix* add_mat(const struct matrix* A, const struct matrix* B);
 
