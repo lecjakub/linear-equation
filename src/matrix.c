@@ -53,6 +53,20 @@ bool set_elem_mat(struct matrix* A, int row, int col,float value){
     return false;
 }
 
+struct matrix* add_mat(const struct matrix* A, const struct matrix* B){
+    if(equal_shape_mat(A,B)){
+        struct matrix* result = new_mat(A->rows,A->cols);
+
+        for (size_t i = 0; i < A->rows; ++i){
+            for (size_t j = 0; j < A->cols; ++j){
+                result->mat[i][j] = A->mat[i][j] + B->mat[i][j];
+            }
+        }
+        return result;
+    }
+    return NULL;
+}
+
 struct matrix* multiply_mat(const struct matrix* A, const struct matrix* B){
     if (A->cols == B->rows ) {
 
