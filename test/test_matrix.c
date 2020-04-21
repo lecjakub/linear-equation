@@ -16,11 +16,11 @@ void test_when_comparing_same_matrix_return_true(void){
     int rows = 5;
     int cols = 4;
     //allocating array of pointer to rows
-    float** mat = (float**)malloc(sizeof(float*)*rows);
+    double** mat = (double**)malloc(sizeof(double*)*rows);
 
     //allocating each rows
     for (int i = 0; i < rows; ++i) {
-        mat[i] = (float*)malloc(sizeof(float)*cols);
+        mat[i] = (double*)malloc(sizeof(double)*cols);
     }
 
     struct matrix A = {
@@ -38,11 +38,11 @@ void test_when_create_new_matrix_return_valid_matrix(void){
     int rows = 5;
     int cols = 4;
     //allocating array of pointer to rows
-    float** mat = (float**)malloc(sizeof(float*)*rows);
+    double** mat = (double**)malloc(sizeof(double*)*rows);
 
     //allocating each rows
     for (size_t i = 0; i < rows; ++i) {
-        mat[i] = (float *) malloc(sizeof(float) * cols);
+        mat[i] = (double *) malloc(sizeof(double) * cols);
 
         for (size_t j = 0; j < cols; ++j) {
             //initiating value of each cell to zero
@@ -57,7 +57,7 @@ void test_when_create_new_matrix_return_valid_matrix(void){
     };
 
     //tested function
-    struct matrix* B = new_mat(rows,cols);
+    struct matrix* B = new_mat(rows,cols,0);
 //    PRINT_MAT(B);
 //    PRINT_MAT(&A)
     //assertions
@@ -77,7 +77,7 @@ void test_when_create_new_matrix_all_cells_are_zeros(void)
     int rows = 5;
     int cols = 4;
     bool zeros = true;
-    struct matrix* A = new_mat(rows,cols);
+    struct matrix* A = new_mat(rows,cols,0);
 
     for (size_t i = 0; i < rows; ++i) {
         for (size_t j = 0; j < cols; ++j) {
@@ -92,16 +92,16 @@ void test_when_create_new_matrix_all_cells_are_zeros(void)
 
 void test_when_valid_matrices_given_multiply_correct(){
 
-    struct matrix* A = new_mat(2,3);
+    struct matrix* A = new_mat(2,3,0);
     set_elem_mat(A,0,0,1);set_elem_mat(A,0,1,2);set_elem_mat(A,0,2,3);
     set_elem_mat(A,1,0,4);set_elem_mat(A,1,1,5);set_elem_mat(A,1,2,6);
 
-    struct matrix* B = new_mat(3,2);
+    struct matrix* B = new_mat(3,2,0);
     set_elem_mat(B,0,0,7);set_elem_mat(B,0,1,8);
     set_elem_mat(B,1,0,9);set_elem_mat(B,1,1,10);
     set_elem_mat(B,2,0,11);set_elem_mat(B,2,1,12);
 
-    struct matrix* expected_result = new_mat(2,2);
+    struct matrix* expected_result = new_mat(2,2,0);
     set_elem_mat(expected_result,0,0,58);set_elem_mat(expected_result,0,1,64);
     set_elem_mat(expected_result,1,0,139);set_elem_mat(expected_result,1,1,154);
 
@@ -117,17 +117,17 @@ void test_when_valid_matrices_given_multiply_correct(){
 }
 
 void test_fs_mat_function(void){
-    struct matrix* A = new_mat(3,3);
+    struct matrix* A = new_mat(3,3,0);
     set_elem_mat(A,0,0,2);set_elem_mat(A,0,1,0);set_elem_mat(A,0,2,0);
     set_elem_mat(A,1,0,1);set_elem_mat(A,1,1,1);set_elem_mat(A,1,2,0);
     set_elem_mat(A,2,0,2);set_elem_mat(A,2,1,1);set_elem_mat(A,2,2,1);
 
-    struct matrix* b = new_mat(3,1);
+    struct matrix* b = new_mat(3,1,0);
     set_elem_mat(b,0,0,2);
     set_elem_mat(b,1,0,3);
     set_elem_mat(b,2,0,7);
 
-    struct matrix* expected_result = new_mat(3,1);
+    struct matrix* expected_result = new_mat(3,1,0);
     set_elem_mat(expected_result,0,0,1);
     set_elem_mat(expected_result,1,0,2);
     set_elem_mat(expected_result,2,0,3);
@@ -142,12 +142,12 @@ void test_fs_mat_function(void){
 }
 
 void test_triu_function(void){
-    struct matrix* A = new_mat(3,3);
+    struct matrix* A = new_mat(3,3,0);
     set_elem_mat(A,0,0,2);set_elem_mat(A,0,1,4);set_elem_mat(A,0,2,7);
     set_elem_mat(A,1,0,1);set_elem_mat(A,1,1,1);set_elem_mat(A,1,2,0);
     set_elem_mat(A,2,0,2);set_elem_mat(A,2,1,1);set_elem_mat(A,2,2,1);
 
-    struct matrix* expected_result = new_mat(3,3);
+    struct matrix* expected_result = new_mat(3,3,0);
     set_elem_mat(expected_result,0,0,0);set_elem_mat(expected_result,0,1,4);set_elem_mat(expected_result,0,2,7);
     set_elem_mat(expected_result,1,0,0);set_elem_mat(expected_result,1,1,0);set_elem_mat(expected_result,1,2,0);
     set_elem_mat(expected_result,2,0,0);set_elem_mat(expected_result,2,1,0);set_elem_mat(expected_result,2,2,0);
@@ -162,12 +162,12 @@ void test_triu_function(void){
 }
 
 void test_tril_function(){
-    struct matrix* A = new_mat(3,3);
+    struct matrix* A = new_mat(3,3,0);
     set_elem_mat(A,0,0,2);set_elem_mat(A,0,1,4);set_elem_mat(A,0,2,7);
     set_elem_mat(A,1,0,1);set_elem_mat(A,1,1,1);set_elem_mat(A,1,2,0);
     set_elem_mat(A,2,0,2);set_elem_mat(A,2,1,1);set_elem_mat(A,2,2,1);
 
-    struct matrix* expected_result = new_mat(3,3);
+    struct matrix* expected_result = new_mat(3,3,0);
     set_elem_mat(expected_result,0,0,0);set_elem_mat(expected_result,0,1,0);set_elem_mat(expected_result,0,2,0);
     set_elem_mat(expected_result,1,0,1);set_elem_mat(expected_result,1,1,0);set_elem_mat(expected_result,1,2,0);
     set_elem_mat(expected_result,2,0,2);set_elem_mat(expected_result,2,1,1);set_elem_mat(expected_result,2,2,0);

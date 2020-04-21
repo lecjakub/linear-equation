@@ -96,8 +96,8 @@
 :libraries:
   :placement: :end
   :flag: "${1}"  # or "-L ${1}" for example
-  :test: [libraries/lib/libconfig.a]
-  :release: [libraries/lib/libconfig.a]
+  :test: [libraries/lib/libconfig.a ]
+  :release: []
 
 :plugins:
   :load_paths:
