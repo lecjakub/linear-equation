@@ -23,12 +23,11 @@ bool set_elem_mat(struct matrix* A, int row, int col,float value);
 
 struct matrix* add_mat(const struct matrix* A, const struct matrix* B);
 
-struct matrix* multiply_mat(const struct matrix* A, const struct matrix* B);
-
-
 struct matrix* subtract_mat(const struct matrix* A, const struct matrix* B);
 
-struct matrix* inv_mat(const struct matrix* A);
+struct matrix* multiply_mat(const struct matrix* A, const struct matrix* B);
+
+struct matrix* fs_mat(const struct matrix* A, const struct matrix* B);
 
 bool equal_mat(const struct matrix* A, const struct matrix* B);
 

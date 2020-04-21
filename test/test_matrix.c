@@ -90,6 +90,27 @@ void test_when_create_new_matrix_all_cells_are_zeros(void)
     }
     delete_mat(A);
     TEST_PASS();
+}
+
+void test_fs_mat_function(void){
+    struct matrix* A = new_mat(3,3);
+    set_elem_mat(A,0,0,2);set_elem_mat(A,0,1,0);set_elem_mat(A,0,2,0);
+    set_elem_mat(A,1,0,1);set_elem_mat(A,1,1,1);set_elem_mat(A,1,2,0);
+    set_elem_mat(A,2,0,2);set_elem_mat(A,2,1,1);set_elem_mat(A,2,2,1);
+
+    struct matrix* b = new_mat(3,1);
+    set_elem_mat(b,0,0,2);
+    set_elem_mat(b,1,0,3);
+    set_elem_mat(b,2,0,7);
+
+    struct matrix* expected_result = new_mat(3,1);
+    set_elem_mat(expected_result,0,0,1);
+    set_elem_mat(expected_result,1,0,2);
+    set_elem_mat(expected_result,2,0,3);
+
+    struct matrix* result = fs_mat(A,b);
+//    PRINT_MAT(result)
+    TEST_ASSERT_TRUE(equal_mat(result,expected_result))
 
 }
 

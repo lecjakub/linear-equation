@@ -67,6 +67,20 @@ struct matrix* add_mat(const struct matrix* A, const struct matrix* B){
     return NULL;
 }
 
+struct matrix* subtract_mat(const struct matrix* A, const struct matrix* B){
+    if(equal_shape_mat(A,B)){
+        struct matrix* result = new_mat(A->rows,A->cols);
+
+        for (size_t i = 0; i < A->rows; ++i){
+            for (size_t j = 0; j < A->cols; ++j){
+                result->mat[i][j] = A->mat[i][j] - B->mat[i][j];
+            }
+        }
+        return result;
+    }
+    return NULL;
+}
+
 struct matrix* multiply_mat(const struct matrix* A, const struct matrix* B){
     if (A->cols == B->rows ) {
 
@@ -74,7 +88,7 @@ struct matrix* multiply_mat(const struct matrix* A, const struct matrix* B){
         struct matrix* result = new_mat(A->rows,B->cols);
         for (size_t r = 0; r < A->rows; ++r) {
             for (size_t c = 0; c < B->cols; ++c) {
-                int total=0;
+                float total=0;
                 for (size_t i = 0; i < B->rows; ++i) {
                     total = total + A->mat[r][i] * B->mat[i][c];
                 }
@@ -86,8 +100,18 @@ struct matrix* multiply_mat(const struct matrix* A, const struct matrix* B){
     }
     return NULL;
 }
+struct matrix* fs_mat(const struct matrix* A, const struct matrix* b){
+    struct matrix* result = new_mat(A->rows,1);
 
-struct matrix* inv_mat(const struct matrix* A){}
+    for (size_t i = 0; i < A->rows; ++i) {
+        float leftside = 0;
+        for (size_t j = 0; j < i; ++j) {
+            leftside += A->mat[i][j] * result->mat[j][0];
+        }
+        result->mat[i][0] = (b->mat[i][0] - leftside)/A->mat[i][i];
+    }
+    return result;
+}
 
 bool equal_mat(const struct matrix* A, const struct matrix* B){
     if (A->rows == B->rows) {
@@ -102,6 +126,7 @@ bool equal_mat(const struct matrix* A, const struct matrix* B){
             return true;
         }
     }
+    return false;
 }
 
 bool equal_shape_mat(const struct matrix* A, const struct matrix* B){
