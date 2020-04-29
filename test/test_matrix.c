@@ -141,6 +141,32 @@ void test_fs_mat_function(void){
     delete_mat(result);
 }
 
+void test_bs_mat_function(void){
+    struct matrix* A = new_mat(3,3,0);
+    set_elem_mat(A,0,0,1);set_elem_mat(A,0,1,1);set_elem_mat(A,0,2,2);
+    set_elem_mat(A,1,0,0);set_elem_mat(A,1,1,1);set_elem_mat(A,1,2,1);
+    set_elem_mat(A,2,0,0);set_elem_mat(A,2,1,0);set_elem_mat(A,2,2,2);
+
+    struct matrix* b = new_mat(3,1,0);
+    set_elem_mat(b,0,0,7);
+    set_elem_mat(b,1,0,3);
+    set_elem_mat(b,2,0,2);
+
+    struct matrix* expected_result = new_mat(3,1,0);
+    set_elem_mat(expected_result,0,0,3);
+    set_elem_mat(expected_result,1,0,2);
+    set_elem_mat(expected_result,2,0,1);
+
+    struct matrix* result = bs_mat(A,b);
+    //PRINT_MAT(result)
+    TEST_ASSERT_TRUE(equal_mat(result,expected_result))
+    delete_mat(A);
+    delete_mat(b);
+    delete_mat(expected_result);
+    delete_mat(result);
+
+}
+
 void test_triu_function(void){
     struct matrix* A = new_mat(3,3,0);
     set_elem_mat(A,0,0,2);set_elem_mat(A,0,1,4);set_elem_mat(A,0,2,7);

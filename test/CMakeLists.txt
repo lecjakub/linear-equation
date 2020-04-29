@@ -10,6 +10,6 @@ include_directories(../build/test/mocks)
 include_directories(../vendor/ceedling/plugins/fake_function_framework/src)
 include_directories(support)
 
-set(TST_FILES test_matrix.c test_argparser.c)
+set(TST_FILES test_matrix.c test_solving_methods.c)
 
 add_executable(tstap ${TST_FILES})

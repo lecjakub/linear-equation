@@ -10,6 +10,8 @@ struct matrix *jacobi(const struct matrix *A, const struct matrix *b);
 
 struct matrix *gaussseidl(const struct matrix *A, const struct matrix *b);
 
-void generate_LU(struct matrix* L, struct matrix* U )
+void generate_LU(struct matrix* L, struct matrix* U );
+
+struct matrix* factorLU(const struct matrix* A, const struct matrix* b);
 
 #endif // SOLVING_METHODS_H

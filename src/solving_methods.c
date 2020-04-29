@@ -45,10 +45,13 @@ struct matrix *jacobi(const struct matrix *A, const struct matrix *b) {
     struct matrix *x = new_mat(A->rows, 1, 1);
 
     double res_norm = 0;
+    double last_res_norm = INFINITY;
+    int iteration=0;
     clock_t start, end;
     start = clock();
     //logic
     do {
+        iteration++;
         //(L + U) * x
         struct matrix *LUx = multiply_mat(LU, x);
 
@@ -67,10 +70,21 @@ struct matrix *jacobi(const struct matrix *A, const struct matrix *b) {
         delete_mat(Ax);
         delete_mat(res);
 
+        //if residuum norm rising this method is not coincident
+        if(last_res_norm < res_norm){
+            x = NULL;
+            break;
+        }
+        last_res_norm = res_norm;
         x = new_x;
+
     } while (res_norm > 1e-9);
     end = clock();
-    printf("czas jacobi: %f\n", (double) ((end - start)) / CLOCKS_PER_SEC);
+
+    if(x != NULL) {
+        printf("jacobi time: %f[s]\n", (double) ((end - start)) / CLOCKS_PER_SEC);
+        printf("jacobi iterations: %d\n\n", iteration);
+    }
 
     delete_mat(L);
     delete_mat(U);
@@ -100,9 +114,12 @@ struct matrix *gaussseidl(const struct matrix *A, const struct matrix *b) {
     struct matrix *x = new_mat(A->rows, 1, 1);
 
     double res_norm = 0;
+    double last_res_norm = INFINITY;
+    int iteration=0;
     clock_t start, end;
     start = clock();
     do {
+        iteration++;
         //U*x
         struct matrix *Ux = multiply_mat(U, x);
         //-(D+L)\(U*x)
@@ -119,12 +136,22 @@ struct matrix *gaussseidl(const struct matrix *A, const struct matrix *b) {
         delete_mat(x);
         delete_mat(Ax);
         delete_mat(res);
+        //if residuum norm rising this method is not coincident
+        if(last_res_norm < res_norm){
+            x = NULL;
+            break;
+        }
 
+        last_res_norm = res_norm;
         x = new_x;
     } while (res_norm > 1e-9);
 
     end = clock();
-    printf("czas gauss-seidl: %f\n", (double) ((end - start)) / CLOCKS_PER_SEC);
+
+    if(x != NULL) {
+        printf("gauss-seidl time: %f[s]\n", (double) ((end - start)) / CLOCKS_PER_SEC);
+        printf("gauss-seidl iterations: %d\n\n",iteration);
+    }
 
     delete_mat(L);
     delete_mat(U);
@@ -136,10 +163,8 @@ struct matrix *gaussseidl(const struct matrix *A, const struct matrix *b) {
 }
 
 
-void generate_LU(struct matrix* L, struct matrix* U ){
+void generate_LU(struct matrix *L, struct matrix *U) {
     int m = U->rows;
-    PRINT_MAT(L)
-    PRINT_MAT(U)
     for (int k = 0; k < m - 1; ++k) {
         for (int j = k + 1; j < m; ++j) {
             L->mat[j][k] = (U->mat[j][k]) / (U->mat[k][k]);
@@ -151,4 +176,21 @@ void generate_LU(struct matrix* L, struct matrix* U ){
             }
         }
     }
+}
+
+struct matrix *factorLU(const struct matrix *A, const struct matrix *b) {
+    struct matrix *L = eye(A->rows);
+    struct matrix *U = copy_mat(A);
+    clock_t start, end;
+    start = clock();
+    generate_LU(L, U);
+    struct matrix *y = fs_mat(L, b);
+    struct matrix *x = bs_mat(U, y);
+    end = clock();
+    printf("LU factorization: %f[s]\n", (double) ((end - start)) / CLOCKS_PER_SEC);
+
+    delete_mat(L);
+    delete_mat(U);
+    delete_mat(y);
+    return x;
 }

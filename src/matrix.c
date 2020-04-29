@@ -42,8 +42,8 @@ bool delete_mat(struct matrix *A) {
     return true;
 }
 
-struct matrix* copy_mat(const struct matrix* A){
-    struct matrix* result = new_mat(A->rows, A->cols,0);
+struct matrix *copy_mat(const struct matrix *A) {
+    struct matrix *result = new_mat(A->rows, A->cols, 0);
 
     for (size_t i = 0; i < A->rows; ++i) {
         for (size_t j = 0; j < A->cols; ++j) {
@@ -53,8 +53,8 @@ struct matrix* copy_mat(const struct matrix* A){
     return result;
 }
 
-struct matrix* eye(int n){
-    struct matrix* result = new_mat(n,n,0);
+struct matrix *eye(int n) {
+    struct matrix *result = new_mat(n, n, 0);
     for (size_t i = 0; i < n; ++i) {
         result->mat[i][i] = 1;
     }
@@ -74,8 +74,8 @@ bool set_elem_mat(struct matrix *A, int row, int col, double value) {
     return false;
 }
 
-double get_elem_mat(const struct matrix* A,int row,int col){
-    if(valid_boundaries(A,row,col)){
+double get_elem_mat(const struct matrix *A, int row, int col) {
+    if (valid_boundaries(A, row, col)) {
         return A->mat[row][col];
     }
     return 0;
@@ -84,7 +84,7 @@ double get_elem_mat(const struct matrix* A,int row,int col){
 
 struct matrix *add_mat(const struct matrix *A, const struct matrix *B) {
     if (equal_shape_mat(A, B)) {
-        struct matrix *result = new_mat(A->rows, A->cols,0);
+        struct matrix *result = new_mat(A->rows, A->cols, 0);
 
         for (size_t i = 0; i < A->rows; ++i) {
             for (size_t j = 0; j < A->cols; ++j) {
@@ -98,7 +98,7 @@ struct matrix *add_mat(const struct matrix *A, const struct matrix *B) {
 
 struct matrix *subtract_mat(const struct matrix *A, const struct matrix *B) {
     if (equal_shape_mat(A, B)) {
-        struct matrix *result = new_mat(A->rows, A->cols,0);
+        struct matrix *result = new_mat(A->rows, A->cols, 0);
 
         for (size_t i = 0; i < A->rows; ++i) {
             for (size_t j = 0; j < A->cols; ++j) {
@@ -114,7 +114,7 @@ struct matrix *multiply_mat(const struct matrix *A, const struct matrix *B) {
     if (A->cols == B->rows) {
 
         //creating new matrix
-        struct matrix *result = new_mat(A->rows, B->cols,0);
+        struct matrix *result = new_mat(A->rows, B->cols, 0);
 
         for (size_t r = 0; r < A->rows; ++r) {
             for (size_t c = 0; c < B->cols; ++c) {
@@ -131,7 +131,7 @@ struct matrix *multiply_mat(const struct matrix *A, const struct matrix *B) {
 }
 
 struct matrix *fs_mat(const struct matrix *A, const struct matrix *b) {
-    struct matrix *result = new_mat(A->rows, 1,0);
+    struct matrix *result = new_mat(A->rows, 1, 0);
 
     for (size_t i = 0; i < A->rows; ++i) {
         double leftside = 0;
@@ -143,8 +143,20 @@ struct matrix *fs_mat(const struct matrix *A, const struct matrix *b) {
     return result;
 }
 
+struct matrix* bs_mat(const struct matrix* A, const struct matrix* b){
+    struct matrix *result = new_mat(A->rows, 1, 0);
+    for (int r = A->rows-1; r >=0; --r) {
+        double leftside = 0;
+        for (int c = A->cols-1; c > r ; --c) {
+            leftside += A->mat[r][c] * result->mat[c][0];
+        }
+        result->mat[r][0] = (b->mat[r][0] - leftside) / A->mat[r][r];
+    }
+    return result;
+}
+
 struct matrix *triu(const struct matrix *A) {
-    struct matrix *result = new_mat(A->rows, A->cols,0);
+    struct matrix *result = new_mat(A->rows, A->cols, 0);
 
     for (size_t i = 0; i < A->cols; ++i) {
         for (size_t j = 0; j < i; ++j) {
@@ -156,7 +168,7 @@ struct matrix *triu(const struct matrix *A) {
 }
 
 struct matrix *tril(const struct matrix *A) {
-    struct matrix *result = new_mat(A->rows, A->cols,0);
+    struct matrix *result = new_mat(A->rows, A->cols, 0);
 
     for (size_t i = 0; i < A->rows; ++i) {
         for (size_t j = 0; j < i; ++j) {
@@ -167,7 +179,7 @@ struct matrix *tril(const struct matrix *A) {
 }
 
 struct matrix *diag(const struct matrix *A) {
-    struct matrix *result = new_mat(A->rows, A->cols,0);
+    struct matrix *result = new_mat(A->rows, A->cols, 0);
 
     for (size_t i = 0; i < A->rows; ++i) {
         result->mat[i][i] = A->mat[i][i];
@@ -176,7 +188,7 @@ struct matrix *diag(const struct matrix *A) {
 }
 
 struct matrix *scal_mat(const struct matrix *A, double scal) {
-    struct matrix *result = new_mat(A->rows, A->cols,0);
+    struct matrix *result = new_mat(A->rows, A->cols, 0);
     for (size_t i = 0; i < A->rows; ++i) {
         for (size_t j = 0; j < A->cols; ++j) {
             result->mat[i][j] = A->mat[i][j] * scal;
@@ -198,7 +210,9 @@ bool equal_mat(const struct matrix *A, const struct matrix *B) {
         if (A->cols == B->cols) {
             for (size_t i = 0; i < A->rows; ++i) {
                 for (size_t j = 0; j < A->cols; ++j) {
-                    if (A->mat[i][j] != B->mat[i][j]) {
+                    double a = A->mat[i][j] >= 0 ? floor(10000 * A->mat[i][j]) / 10000 : ceil(10000 * A->mat[i][j]) / 10000 ;
+                    double b = B->mat[i][j] >= 0 ? floor(10000 * B->mat[i][j]) / 10000: ceil(10000 * B->mat[i][j]) / 10000;
+                    if (a != b) {
                         return false;
                     }
                 }
