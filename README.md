@@ -7,7 +7,7 @@
      cd src 
      mkdir build 
      cd build 
-     cmake ../
+     cmake ../ -B .
      cmake --build . 
 
- program executable will be created in the build folder and named "mnap".  
+ program executable will be created in the build folder and named "lin_eq".  
